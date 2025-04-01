@@ -4,7 +4,7 @@
 read -p "Site name (e.g. demo): " SITENAME
 read -p "Stack name (e.g. wp_mark): " STACK_NAME
 read -p "GitHub org or user (e.g. ProspectMatch): " GITHUB_USER
-IMAGE_NAME="ghcr.io/${GITHUB_USER}/${STACK_NAME}:latest"
+IMAGE_NAME="ghcr.io/$(echo ${GITHUB_USER,,})/${STACK_NAME}:latest"
 REPO_NAME="${STACK_NAME}"
 
 read -p "Domain (e.g. mark.example.com): " DOMAIN
