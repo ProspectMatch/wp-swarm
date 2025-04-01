@@ -18,7 +18,7 @@ read -p "WordPress admin username: " ADMIN_USER
 read -p "WordPress admin password: " ADMIN_PASS
 
 STACK_NAME="wp_${SITENAME}"
-IMAGE_NAME="ghcr.io/${GITHUB_USER}/${STACK_NAME}:latest"
+IMAGE_NAME="ghcr.io/$(echo ${GITHUB_USER,,})/${STACK_NAME}:latest"
 REPO_NAME="${STACK_NAME}"
 WORKDIR="${STACK_ROOT}/${STACK_NAME}"
 
