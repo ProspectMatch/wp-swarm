@@ -1,0 +1,33 @@
+version: "3.8"
+
+services:
+  wordpress:
+    build: ./wordpress
+    image: yourdockerhub/wp_template:latest
+    environment:
+      WORDPRESS_DB_HOST: npm_npm-mysql
+      WORDPRESS_DB_NAME: template_db
+      WORDPRESS_DB_USER: template_user
+      WORDPRESS_DB_PASSWORD: template_pass
+      WP_SITE_URL: http://example.com
+      WP_ADMIN_USER: admin
+      WP_ADMIN_PASS: adminpass
+      WP_ADMIN_EMAIL: admin@example.com
+    volumes:
+      - wp_template_data:/var/www/html
+    networks:
+      - npm_default
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      placement:
+        constraints:
+          - node.hostname == wp1
+
+volumes:
+  wp_template_data:
+
+networks:
+  npm_default:
+    external: true
