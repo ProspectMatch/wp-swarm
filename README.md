@@ -30,6 +30,7 @@ Template for deploying WordPress in a **Docker Swarm** environment using:
 ## 🧰 Requirements
 
 - Docker Swarm with at least one node - label (name) required during install
+- Docker CLI on swarm manager
 - GitHub Secrets:
   - `DOCKERHUB_USERNAME`
   - `DOCKERHUB_TOKEN`
@@ -84,7 +85,7 @@ This triggers:
 
 ## 📜 Deployment Script
 
-The `/scripts/createPrivateSiteFromTemplate.sh` script should be run on your Docker Swarm manager to:
+The `/scripts/createPrivateSiteFromTemplate.sh` script should be copied and run on your Docker Swarm manager to:
 
 - Clone this template
 - Customize values for a new WordPress site
