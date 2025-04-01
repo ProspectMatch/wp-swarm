@@ -98,8 +98,8 @@ The `/scripts/createPrivateSiteFromTemplate.sh` script should be run on your Doc
       - Paste your token (recommended) or authenticate via browser
 
 Run it with:
-
-- chmod +x scripts/createPrivateSiteFromTemplate.sh
+- mkdir -p /scripts
+- chmod +x /scripts/createPrivateSiteFromTemplate.sh
 - ./scripts/createPrivateSiteFromTemplate.sh
 
 ---
