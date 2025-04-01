@@ -1,6 +1,6 @@
 # 🚀 WordPress Docker Swarm Template
 
-GitHub template for deploying WordPress in a **Docker Swarm** environment using:
+Template for deploying WordPress in a **Docker Swarm** environment using:
 
 - 🐳 Docker Swarm
 - ⚙️ GitHub Actions (CI/CD)
