@@ -91,8 +91,7 @@ The `/scripts/createPrivateSiteFromTemplate.sh` script should be copied and run 
 - Customize values for a new WordPress site
 - Create a new private repo
 - Push and trigger CI/CD deployment
-- GitHub CLI is required on swarm manager
-- GitHub authentication required on swarm manager:
+- GitHub CLI authentication required on swarm manager:
   - gh auth login (then choose)
       - GitHub.com
       - HTPPS
