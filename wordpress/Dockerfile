@@ -1,21 +1,33 @@
-FROM wordpress:php8.4-fpm
+FROM ubuntu:24.04
 
-RUN apt-get update && apt-get install -y openssh-server unzip curl vim sudo && rm -rf /var/lib/apt/lists/*
-RUN mkdir /var/run/sshd
+# Set non-interactive mode
+ENV DEBIAN_FRONTEND=noninteractive
 
-ARG SSH_USER
-ARG SSH_PASS
+# Install PHP 8.4, NGINX, and required extensions
+RUN apt-get update && apt-get install -y \
+    curl wget unzip gnupg ca-certificates lsb-release supervisor nginx mariadb-client \
+    php8.4 php8.4-fpm php8.4-mysql php8.4-curl php8.4-gd php8.4-mbstring \
+    php8.4-xml php8.4-zip php8.4-soap php8.4-intl php8.4-bcmath php8.4-cli \
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists/*
 
-RUN useradd -m $SSH_USER && echo "$SSH_USER:$SSH_PASS" | chpasswd && adduser $SSH_USER www-data
-RUN sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config
+# Download and install WordPress
+WORKDIR /var/www/html
+RUN curl -O https://wordpress.org/latest.tar.gz \
+ && tar -xzf latest.tar.gz --strip-components=1 \
+ && rm latest.tar.gz
 
-RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
-    chmod +x wp-cli.phar && mv wp-cli.phar /usr/local/bin/wp
+# Set permissions
+RUN chown -R www-data:www-data /var/www/html \
+ && chmod -R 755 /var/www/html
 
-RUN mkdir -p /var/www/.wp-cli/cache && chown -R www-data:www-data /var/www/.wp-cli
+# Add custom NGINX config
+COPY ./nginx/default.conf /etc/nginx/sites-available/default
 
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+# Add Supervisor config to run both PHP and NGINX
+COPY ./supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-EXPOSE 9000 22
-CMD ["/entrypoint.sh"]
+EXPOSE 80
+
+# Run both services with Supervisor
+CMD ["/usr/bin/supervisord", "-n"]
