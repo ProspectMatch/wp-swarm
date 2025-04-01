@@ -82,6 +82,28 @@ This triggers:
 
 ---
 
+## 📜 Deployment Script
+
+The `/scripts/createPrivateSiteFromTemplate.sh` script should be run on your Docker Swarm manager to:
+
+- Clone this template
+- Customize values for a new WordPress site
+- Create a new private repo
+- Push and trigger CI/CD deployment
+- GitHub CLI is required on swarm manager
+- GitHub authentication required on swarm manager:
+  - gh auth login (then choose)
+      - GitHub.com
+      - HTPPS
+      - Paste your token (recommended) or authenticate via browser
+
+Run it with:
+
+- chmod +x scripts/createPrivateSiteFromTemplate.sh
+- ./scripts/createPrivateSiteFromTemplate.sh
+
+---
+
 ## 🔒 License
 
 This project is licensed under the [MIT License](LICENSE).
