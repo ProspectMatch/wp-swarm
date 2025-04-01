@@ -8,7 +8,6 @@ Template for deploying WordPress in a **Docker Swarm** environment using:
 - 🌐 NGINX Proxy Manager
 - 🛠 MariaDB (shared container or RDS)
 - 🧩 Auto WordPress install + plugin setup
-- ✅ Optional: Redis + Cloudflare DNS
 
 ---
 
