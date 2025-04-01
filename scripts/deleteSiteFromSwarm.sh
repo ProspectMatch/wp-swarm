@@ -1,9 +1,12 @@
 #!/bin/bash
 
 # --- PROMPTS ---
-read -p "Site name (e.g. mark): " SITENAME
+read -p "Site name (e.g. demo): " SITENAME
 read -p "Stack name (e.g. wp_mark): " STACK_NAME
-read -p "Docker image name (e.g. wp_mark_image): " IMAGE_NAME
+read -p "GitHub org or user (e.g. ProspectMatch): " GITHUB_USER
+IMAGE_NAME="ghcr.io/${GITHUB_USER}/${STACK_NAME}:latest"
+REPO_NAME="${STACK_NAME}"
+
 read -p "Domain (e.g. mark.example.com): " DOMAIN
 read -p "MariaDB container name (e.g. npm_npm-mysql): " DB_CONTAINER
 read -p "MariaDB root password: " DB_ROOT_PASS
@@ -17,8 +20,7 @@ echo ""
 
 read -p "Delete GitHub repo too? (y/N): " DELETE_REPO
 if [[ "$DELETE_REPO" == "y" || "$DELETE_REPO" == "Y" ]]; then
-  read -p "GitHub org or user (e.g. ProspectMatch): " GITHUB_USER
-  read -p "Repo name (e.g. wp_mark): " REPO_NAME
+  echo "🔐 Using GitHub CLI to delete repo and GHCR image..."
 fi
 
 echo ""
@@ -31,8 +33,8 @@ echo "🗑 Removing stack: $STACK_NAME"
 docker stack rm "$STACK_NAME"
 sleep 5
 
-# --- REMOVE IMAGE ---
-echo "🗑 Removing Docker image: $IMAGE_NAME"
+# --- REMOVE LOCAL DOCKER IMAGE ---
+echo "🗑 Removing local Docker image: $IMAGE_NAME"
 docker image rm "$IMAGE_NAME" --force || echo "Image not found or already removed."
 
 # --- REMOVE MARIADB DATABASE + USER ---
@@ -67,11 +69,14 @@ else
   fi
 fi
 
-# --- DELETE GITHUB REPO (optional) ---
+# --- DELETE FROM GHCR + GITHUB REPO (optional) ---
 if [[ "$DELETE_REPO" == "y" || "$DELETE_REPO" == "Y" ]]; then
+  echo "🗑 Deleting image from GHCR..."
+  gh api --method DELETE /user/packages/container/${STACK_NAME}/versions --silent || echo "⚠️ Could not delete image. It may be retained or require manual cleanup."
+
   echo "🗑 Deleting GitHub repo: $GITHUB_USER/$REPO_NAME"
   gh repo delete "$GITHUB_USER/$REPO_NAME" --yes || echo "⚠️ Failed to delete repo (check auth/token)"
 fi
 
 echo ""
-echo "✅ All done. '$STACK_NAME' and associated resources have been removed."
+echo "✅ All done. '${STACK_NAME}' and related resources have been removed."
