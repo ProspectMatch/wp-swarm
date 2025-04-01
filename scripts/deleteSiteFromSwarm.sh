@@ -2,20 +2,20 @@
 
 # --- PROMPTS ---
 read -p "Site name (e.g. demo): " SITENAME
-read -p "Stack name (e.g. wp_mark): " STACK_NAME
-read -p "GitHub org or user (e.g. ProspectMatch): " GITHUB_USER
+read -p "Stack name (e.g. demo_stack): " STACK_NAME
+read -p "GitHub org or user (e.g. UserName): " GITHUB_USER
 IMAGE_NAME="ghcr.io/$(echo ${GITHUB_USER,,})/${STACK_NAME}:latest"
 REPO_NAME="${STACK_NAME}"
 
-read -p "Domain (e.g. mark.example.com): " DOMAIN
-read -p "MariaDB container name (e.g. npm_npm-mysql): " DB_CONTAINER
+read -p "Domain (e.g. demo.example.com): " DOMAIN
+read -p "MariaDB container name (e.g. mysql): " DB_CONTAINER
 read -p "MariaDB root password: " DB_ROOT_PASS
-read -p "MariaDB database name (e.g. mark_db): " DB_NAME
-read -p "MariaDB user to drop (e.g. mark_user): " DB_USER
+read -p "MariaDB database name (e.g. db_name): " DB_NAME
+read -p "MariaDB user to drop (e.g. db_user): " DB_USER
 
 read -p "NPM Host (e.g. http://localhost:81): " NPM_HOST
 read -p "NPM Email login: " NPM_USER
-read -sp "NPM Password: " NPM_PASS
+read -p "NPM Password: " NPM_PASS
 echo ""
 
 read -p "Delete GitHub repo too? (y/N): " DELETE_REPO
