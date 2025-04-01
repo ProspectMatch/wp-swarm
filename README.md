@@ -102,6 +102,9 @@ Run it with:
 - chmod +x /scripts/createPrivateSiteFromTemplate.sh
 - ./scripts/createPrivateSiteFromTemplate.sh
 
+To delete a site from the swarm:
+run `/scripts/deleteSiteFromSwarm.sh`
+
 ---
 
 ## 🔒 License
