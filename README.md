@@ -21,7 +21,11 @@ Template for deploying WordPress in a **Docker Swarm** environment using:
   - Auto plugin install
 - GitHub Actions workflow to:
   - Build Docker image
-  - Push to Docker Hub
+  - Push to GitHub Container Registry (GHCR)
+      - Organizational secret required
+        - SWARM_HOST
+        - SWARM_USER
+        - SSH_PRIVATE_KEY
   - Deploy to your Swarm node via SSH
 - `entrypoint.sh` to initialize WordPress and install core plugins
 
