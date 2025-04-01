@@ -3,7 +3,7 @@ version: "3.8"
 services:
   wordpress:
     build: ./wordpress
-    image: yourdockerhub/wp_template:latest
+    image: ghcr.io/ProspectMatch/wp_template:latest
     environment:
       WORDPRESS_DB_HOST: npm_npm-mysql
       WORDPRESS_DB_NAME: template_db
