@@ -1,0 +1,42 @@
+name: Build and Deploy WordPress
+
+on:
+  push:
+    branches: [ main ]
+
+env:
+  IMAGE_NAME: wp_template
+  IMAGE_TAG: latest
+  STACK_NAME: wp_template
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Login to DockerHub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: Build and push image
+      uses: docker/build-push-action@v5
+      with:
+        context: ./wordpress
+        push: true
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/wp_template:latest
+
+    - name: Deploy to Swarm
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.SWARM_HOST }}
+        username: ${{ secrets.SWARM_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          docker stack deploy -c /docker/stacks/wp_template/docker-compose.yml wp_template
