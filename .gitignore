@@ -1,23 +1,16 @@
-# OS/System
+# OS/system files
 .DS_Store
 Thumbs.db
 
-# Editor/IDE junk
-*.swp
-*.swo
+# Docker-related
+*.log
+.env
+wp_*_data/
+
+# Editor folders
 .vscode/
 .idea/
 
-# Git
-.git/
-.gitignore
-
-# Build output (optional if built locally)
-*.log
-
-# Docker volumes (optional)
-wp_*_data/
-
-# Secrets (if you store local testing config)
-.env
-.env.*
+# Dependency caches (if using Composer/NPM later)
+node_modules/
+vendor/
