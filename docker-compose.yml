@@ -29,5 +29,5 @@ volumes:
   wp_template_data:
 
 networks:
-  npm_default:
+  external_network_name:
     external: true
