@@ -39,6 +39,7 @@ Template for deploying WordPress in a **Docker Swarm** environment using:
 - Optional:
   - NGINX Proxy Manager running
   - Cloudflare credentials (for DNS automation)
+  - Passwords are visibile during setup for verification. Modify the script to hide passwords using -sp instead of -p if you want to hide the passwords.
 
 ---
 
