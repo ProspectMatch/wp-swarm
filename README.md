@@ -30,7 +30,7 @@ Template for deploying WordPress in a **Docker Swarm** environment using:
 ## 🧰 Requirements
 
 - Docker Swarm with at least one node - label (name) required during install
-- Docker CLI on swarm manager
+- GitHub CLI on swarm manager
 - GitHub Secrets:
   - `DOCKERHUB_USERNAME`
   - `DOCKERHUB_TOKEN`
