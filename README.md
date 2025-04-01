@@ -95,4 +95,4 @@ This project is licensed under the [MIT License](LICENSE).
 
 ---
 
-> Made with ❤️ by [Your Name or Org]
+> Made with ❤️ by Mark Wood - Prospect Match LLC
