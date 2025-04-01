@@ -1,9 +1,11 @@
 #!/bin/bash
 
-# --- CONFIG ---
-TEMPLATE_REPO="https://github.com/ProspectMatch/wp-swarm"
-GITHUB_USER="ProspectMatch"
-STACK_ROOT="/docker/stacks"
+# --- CONFIG (Prompted) ---
+read -p "GitHub template org/user (e.g. owner): " TEMPLATE_OWNER
+read -p "GitHub template repo (e.g. repo): " TEMPLATE_REPO
+read -p "GitHub user/org to create site repo under (GitHub User): " GITHUB_USER
+read -p "Swarm stack root directory (default: /docker/stacks): " STACK_ROOT
+STACK_ROOT=${STACK_ROOT:-/docker/stacks}
 
 # --- PROMPTS ---
 read -p "Site name (e.g. demo): " SITENAME
@@ -16,11 +18,21 @@ read -p "Database password: " DB_PASS
 read -p "WordPress admin email: " ADMIN_EMAIL
 read -p "WordPress admin username: " ADMIN_USER
 read -p "WordPress admin password: " ADMIN_PASS
+read -p "Swarm network name (default: wp-net): " NETWORK_NAME
+NETWORK_NAME=${NETWORK_NAME:-wp-net}
 
 STACK_NAME="wp_${SITENAME}"
 IMAGE_NAME="ghcr.io/$(echo ${GITHUB_USER,,})/${STACK_NAME}:latest"
 REPO_NAME="${STACK_NAME}"
 WORKDIR="${STACK_ROOT}/${STACK_NAME}"
+
+# --- Create overlay network if not exists ---
+if ! docker network ls --filter name="^${NETWORK_NAME}$" --format '{{.Name}}' | grep -qw "${NETWORK_NAME}"; then
+  echo "🔌 Creating overlay network '${NETWORK_NAME}'..."
+  docker network create --driver=overlay --attachable "${NETWORK_NAME}"
+else
+  echo "✅ Overlay network '${NETWORK_NAME}' already exists."
+fi
 
 # --- Clean up old dir if it exists ---
 if [ -d "$WORKDIR" ]; then
@@ -30,7 +42,7 @@ fi
 
 # --- Clone the template repo ---
 echo "📥 Cloning wp-swarm template..."
-gh repo clone ${GITHUB_USER}/wp-swarm "${WORKDIR}" || { echo "❌ Failed to clone repo"; exit 1; }
+gh repo clone ${TEMPLATE_OWNER}/${TEMPLATE_REPO} "${WORKDIR}" || { echo "❌ Failed to clone repo"; exit 1; }
 
 cd "${WORKDIR}"
 
@@ -48,6 +60,7 @@ find . -type f -exec sed -i \
   -e "s|WP_ADMIN_USER=.*|WP_ADMIN_USER=${ADMIN_USER}|g" \
   -e "s|WP_ADMIN_PASS=.*|WP_ADMIN_PASS=${ADMIN_PASS}|g" \
   -e "s|WP_ADMIN_EMAIL=.*|WP_ADMIN_EMAIL=${ADMIN_EMAIL}|g" \
+  -e "s|external_network_name|${NETWORK_NAME}|g" \
   {} +
 
 # --- Init Git repo ---
