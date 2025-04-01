@@ -1,1 +1,23 @@
+# OS/System
+.DS_Store
+Thumbs.db
 
+# Editor/IDE junk
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# Git
+.git/
+.gitignore
+
+# Build output (optional if built locally)
+*.log
+
+# Docker volumes (optional)
+wp_*_data/
+
+# Secrets (if you store local testing config)
+.env
+.env.*
