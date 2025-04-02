@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   wordpress:
-    image: ghcr.io/ghcruser/wp_template:latest  # <-- custom placeholder to be replaced
+    image: ghcr.io/ghcruser/wp_template  # <-- custom placeholder to be replaced
     environment:
       WORDPRESS_DB_HOST: npm_npm-mysql
       WORDPRESS_DB_NAME: template_db
