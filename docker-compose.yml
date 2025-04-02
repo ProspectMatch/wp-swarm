@@ -16,14 +16,14 @@ services:
     volumes:
       - wp_template_data:/var/www/html
     networks:
-      - npm_default
+      - external_network_name
     deploy:
       replicas: 1
       restart_policy:
         condition: on-failure
       placement:
         constraints:
-          - node.hostname == wp1
+          - node.hostname == nodeHostname
 
 volumes:
   wp_template_data:
